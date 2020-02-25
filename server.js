@@ -11,17 +11,9 @@ app.get('/express_backend', (req, res) => {
   });
 
 //Routing
-app.get ('/', (req, res) => {
-    //res.send('Hello Internet!')
-    res.render('index')
-})
-/*
-app.get('/general', (req,res) => {
-    res.render('chatrm', { room : "general"})
-})
-app.get('/tech', (req,res) => {
-    res.render('chatrm', { room : "tech"})
-})// */
+app.get('/**', (req, res) => {
+    res.sendfile(path.join(__dirname , 'client/public/index.html'))
+  });
 
 //PORTS
 server = app.listen(3000)
