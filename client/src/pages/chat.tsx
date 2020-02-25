@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import openSocket from 'socket.io-client';
+import socketIOClient  from 'socket.io-client';
 interface chatState{
     name : string
     room : string
     msg : string
-    socket : Socket
 }
 
 class Chatpage extends Component <{}, chatState>{
@@ -14,9 +13,13 @@ class Chatpage extends Component <{}, chatState>{
             name: "Anonymouse",
             room : "general",
             msg : ""
-            socket : openSocket('https://blooming-fortress-18235.herokuapp.com/')
         };
     }
+    componentDidMount(){
+        var socket : SocketIOClient.Socket = socketIOClient('https://blooming-fortress-18235.herokuapp.com/')
+        
+    }
+
     updateMsg(e : React.FormEvent<HTMLInputElement> ){
         this.setState({msg: e.currentTarget.value});
     }
