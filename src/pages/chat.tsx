@@ -10,7 +10,7 @@ export class Title extends Component {
     render () {
         return (
             <header>
-                <h1><span id="green">R</span>act <span id="green">H</span>ack <span id="green">C</span>hat</h1>
+                <h1>The <span id="green">R</span>eact <span id="green">H</span>ack <span id="green">C</span>hat</h1>
             </header>
         )
     }
@@ -27,10 +27,10 @@ class Roomnav extends Component {
         return (
             <aside>
                 <ul className="rm-links" >
-                    <li><a href="/general">Room 1</a></li>
-                    <li className="active"><a href="/tech" >Room 2</a></li>
-                    <li><a href="">Room 3</a ></li>
-                    <li><a href="">Room 4</a ></li>
+                    <li><a href="/general">General</a></li>
+                    <li className="active"><a href="/tech" >Tech Help</a></li>
+                    <li><a href="code">Code Samples</a ></li>
+                    <li><a href="off">Off Topic</a ></li>
                 </ul>
             </aside>
         )
