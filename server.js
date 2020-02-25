@@ -49,11 +49,12 @@ chat_io.on('connection', (socket) => {
     socket.room = 'general'
     let pastmsg = pastmessages.general;
     // send new user messages
+    /*
     for (message in pastmsg){
         socket.emit ("new_message",
             {message : messages[message].message, username : messages[message].username, color : messages[message].color}
         )
-    }
+    }//*/
 
     //defalt name
     socket.username = "Anonymouse"
@@ -70,6 +71,7 @@ chat_io.on('connection', (socket) => {
         socket.leave(socket.room)
         socket.join(data.room);
         socket.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
+        /*
         let messages;
         if (data.room=='general')
             messages = pastmessages.general;
@@ -83,12 +85,13 @@ chat_io.on('connection', (socket) => {
             socket.emit ("new_message",
                 {message : messages[message].message, username : messages[message].username, color : messages[message].color}
             )
-        }
+        }//*/
     })
 
     //listen to new message
     socket.on("new_message", (data) => {
         message = {message : data.message, username : socket.username, color : socket.color};
+        /*
         let messages;
         if (socket.room=='general')
             messages = pastmessages.general;
@@ -99,9 +102,9 @@ chat_io.on('connection', (socket) => {
         else if (socket.room=='off')
             messages = pastmessages.off;
         messages.push(message);
-        
+        // */
         //console.log(messages)
-        chat_io.sockets.in(socket.room).emit ("new_message", message);
+        chat_io.sockets.in(socket.room).emit ("new_message", message + socket.room);
     })
 })
 
