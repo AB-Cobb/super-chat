@@ -96,7 +96,7 @@ chat_io.on('connection', (socket) => {
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
 
-        let pastmsg = getPastMessages('general');
+        let pastmsg = getPastMessages(data.room);
         for (message in pastmsg){
             socket.emit ("new_message",
             {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
