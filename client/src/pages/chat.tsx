@@ -3,6 +3,7 @@ import socketIOClient  from 'socket.io-client';
 
 interface chatState{
     name : string
+    prevname : string
     room : string
     msg : string
     socket : SocketIOClient.Socket
@@ -16,6 +17,7 @@ class Chatpage extends Component <{}, chatState>{
         super(props);
         this.state = {
             name: "Anonymouse",
+            prevname: "Anonymouse",
             room : "general",
             msg : "",
             socket : socketIOClient(),
@@ -46,8 +48,12 @@ class Chatpage extends Component <{}, chatState>{
         if (this.state.msg !== ""){
             const socket = this.state.socket;
             let msg : string = this.state.msg;
-            if (this.state.name == ""){
-                this.setState({name : "Anonymouse"})
+            if (this.state.name !== this.state.prevname){
+                if (this.state.name == ""){
+                    this.setState({name : "Anonymouse"})
+                }
+                socket.emit("change_username", {username : this.state.name})
+                this.setState({prevname : this.state.name})
             }
             socket.emit('new_message', {message : this.state.msg, username : "Test Name"/*this.state.name*/})
             this.setState({msg : ""})
