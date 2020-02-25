@@ -1,34 +1,33 @@
 import React, { Component } from 'react';
 import socketIOClient  from 'socket.io-client';
-import { Socket } from 'dgram';
-import { isNullOrUndefined } from 'util';
+
 interface chatState{
     name : string
     room : string
     msg : string
     socket : SocketIOClient.Socket
+    msglist : any
 }
 
+
 class Chatpage extends Component <{}, chatState>{
+    
     constructor(props : any) {
         super(props);
         this.state = {
             name: "Anonymouse",
             room : "general",
             msg : "",
-            socket : socketIOClient('https://blooming-fortress-18235.herokuapp.com/')
+            socket : socketIOClient(),
+            msglist : []
         };
         this.updateMsg = this.updateMsg.bind(this);
         this.updateName = this.updateName.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
     }
-    componentDidMount(){
-        const socket = this.state.socket;
-        /*
-        socket.on("new_message", (data : any) => {
-            chatroom.append("<div class='message' style='background-color : "+data.color+"'><span>"+ data.username
-                +":</span><p class='message_content'>"+ data.message +"</p></div>")
-        })// */
-    }
+    
+
+ 
 
     updateMsg(e : React.FormEvent<HTMLInputElement> ){
         this.setState({msg: e.currentTarget.value});
@@ -46,6 +45,13 @@ class Chatpage extends Component <{}, chatState>{
         this.setState({msg : ""})
     }
     render () {
+        const socket = this.state.socket;
+        socket.on("new_message", (data : { username: string; message: string; color : string}) => {
+            console.log(data)
+            let msglist : [{ username: string; message: string; color : string}]= this.state.msglist 
+            msglist.push(data)
+            this.setState({msglist : msglist});
+        })
         let room = this.state.room;
         let links = [room == "general" ? <li className="active"><a >General</a></li> : <li><a onClick={() => this.setState({room : 'general'})} >General</a></li>,
                      room == "coding" ?  <li className="active"><a>Coding</a ></li> : <li><a onClick={() => this.setState({room : 'coding'})} >Coding</a ></li>,
@@ -66,7 +72,14 @@ class Chatpage extends Component <{}, chatState>{
                         </ul>
                     </aside>
                     <section id="chatroom">
-                        <section id="feedback"></section>
+                        {this.state.msglist.map((message: { username: string; message: string; color : string})  => {
+                            return (
+                                <div className="message" style={{ background: message.color}}>
+                                    <span> {message.username}:</span>
+                                    <p className='message_content'>{message.message} </p>
+                                </div>
+                            )
+                        })}
                     </section>
                 </main>
                 <footer>
