@@ -67,9 +67,12 @@ chat_io.on('connection', (socket) => {
 
     //listen for room change
     socket.on ("switch_room", (data) => {
-        console.log(data.room)
-        socket.leave(socket.room)
+        console.log(data.room);
+        socket.room = data.room;
+        /*
+        socket.leave(socket.room);
         socket.join(data.room);
+        */
         socket.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
         /*
         let messages;
