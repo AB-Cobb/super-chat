@@ -3,7 +3,7 @@ const app = express()
 
 //app.set ('view engine', 'ejs')
 
-app.use (express.static('public'))
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 //testing
 app.get('/express_backend', (req, res) => {
@@ -11,8 +11,8 @@ app.get('/express_backend', (req, res) => {
   });
 
 //Routing
-app.get('/**', (req, res) => {
-    res.sendfile(path.join(__dirname , 'client/public/index.html'))
+app.get('*', (req, res) => {
+    res.sendfile(path.join(__dirname , '/client/build/index.html'))
   });
 
 //PORTS
