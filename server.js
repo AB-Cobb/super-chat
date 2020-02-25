@@ -1,6 +1,7 @@
 const express = require ('express')
 const app = express()
 const path = require('path');
+
 //app.set ('view engine', 'ejs')
 
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -16,7 +17,7 @@ app.get('*', (req, res) => {
   });
 
 //PORTS
-server = app.listen(3000)
+server = app.listen(process.env.PORT || 3000)
 
 //Socket
 const chat_io = require("socket.io")(server)
