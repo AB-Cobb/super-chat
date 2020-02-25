@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import socketIOClient  from 'socket.io-client';
+import { Socket } from 'dgram';
+import { isNullOrUndefined } from 'util';
 interface chatState{
     name : string
     room : string
     msg : string
+    socket : SocketIOClient.Socket
 }
 
 class Chatpage extends Component <{}, chatState>{
@@ -12,12 +15,19 @@ class Chatpage extends Component <{}, chatState>{
         this.state = {
             name: "Anonymouse",
             room : "general",
-            msg : ""
+            msg : "",
+            socket : socketIOClient('https://blooming-fortress-18235.herokuapp.com/')
         };
+        this.updateMsg = this.updateMsg.bind(this);
+        this.updateName = this.updateName.bind(this);
     }
     componentDidMount(){
-        var socket : SocketIOClient.Socket = socketIOClient('https://blooming-fortress-18235.herokuapp.com/')
-        
+        const socket = this.state.socket;
+        /*
+        socket.on("new_message", (data : any) => {
+            chatroom.append("<div class='message' style='background-color : "+data.color+"'><span>"+ data.username
+                +":</span><p class='message_content'>"+ data.message +"</p></div>")
+        })// */
     }
 
     updateMsg(e : React.FormEvent<HTMLInputElement> ){
@@ -27,10 +37,12 @@ class Chatpage extends Component <{}, chatState>{
         this.setState({name: e.currentTarget.value});
     }
     sendMessage(){
+        const socket = this.state.socket;
         let msg : string = this.state.msg;
         if (this.state.name == ""){
             this.setState({name : "Anonymouse"})
         }
+        socket.emit('new_message', {message : this.state.msg, username : this.state.name})
         this.setState({msg : ""})
     }
     render () {
