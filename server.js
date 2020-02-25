@@ -47,9 +47,9 @@ chat_io.on('connection', (socket) => {
     numuser++;
     numuser = numuser%colors.length;
     socket.room = 'general'
-    let messages = pastmessages.general;
+    let pastmsg = pastmessages.general;
     // send new user messages
-    for (message in messages){
+    for (message in pastmsg){
         socket.emit ("new_message",
             {message : messages[message].message, username : messages[message].username, color : messages[message].color}
         )
@@ -63,10 +63,13 @@ chat_io.on('connection', (socket) => {
         console.log(data.username)
         socket.username = data.username;
     })
+
+    //listen for room change
     socket.on ("switch_room", (data) => {
         console.log(data.room)
         socket.leave(socket.room)
         socket.join(data.room);
+        socket.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
         let messages;
         if (data.room=='general')
             messages = pastmessages.general;
