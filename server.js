@@ -27,8 +27,7 @@ pastmessages = {
     general : [],
     coding : [],
     tech : [],
-    off : []
-    };
+    off : []};
 colors = ["#035",
           "#050",
           "#500",
