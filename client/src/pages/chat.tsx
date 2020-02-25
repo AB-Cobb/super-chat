@@ -27,10 +27,10 @@ class Roomnav extends Component {
         return (
             <aside>
                 <ul className="rm-links" >
-                    <li><a href="/general">General</a></li>
-                    <li className="active"><a href="/tech" >Tech Help</a></li>
-                    <li><a href="code">Code Samples</a ></li>
-                    <li><a href="off">Off Topic</a ></li>
+                    <li><a>General</a></li>
+                    <li><a> className="active"Coding</a ></li>
+                    <li><a>Off Topic</a ></li>
+                    <li><a>Tech Help</a></li>
                 </ul>
             </aside>
         )
