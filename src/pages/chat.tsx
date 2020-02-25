@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import '../components/title'
-import '../components/roomnav'
 
 export class Title extends Component {
     constructor(props : any) {
