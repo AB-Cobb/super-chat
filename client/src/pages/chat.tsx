@@ -20,13 +20,17 @@ class Chatpage extends Component <{}, chatState>{
             prevname: "Anonymouse",
             room : "general",
             msg : "",
-            socket : socketIOClient(),
+            socket : socketIOClient("/chatrm"),
             msglist : []
         };
         this.updateMsg = this.updateMsg.bind(this);
         this.updateName = this.updateName.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         const socket = this.state.socket;
+        const room = this.state.room
+        socket.on('connection', function(io : any){
+            io.join(room);
+          });
         socket.on("new_message", (data : { username: string; message: string; color : string}) => {
             console.log(data)
             let msglist : [{ username: string; message: string; color : string}]= this.state.msglist 
@@ -34,8 +38,14 @@ class Chatpage extends Component <{}, chatState>{
             this.setState({msglist : msglist});
         })
     }
-    
 
+    changeRm (room : string){
+        this.setState({room : room})
+        const socket = this.state.socket;
+        socket.on('connection', function(io : any){
+            io.join(room);
+          });
+    }
  
 
     updateMsg(e : React.FormEvent<HTMLInputElement> ){
@@ -62,10 +72,10 @@ class Chatpage extends Component <{}, chatState>{
     render () {
         
         let room = this.state.room;
-        let links = [room == "general" ? <li className="active"><a >General</a></li> : <li><a onClick={() => this.setState({room : 'general'})} >General</a></li>,
-                     room == "coding" ?  <li className="active"><a>Coding</a ></li> : <li><a onClick={() => this.setState({room : 'coding'})} >Coding</a ></li>,
-                     room == "off" ? <li className="active"><a>Off Topic</a ></li> : <li><a onClick={() => this.setState({room : 'off'})}>Off Topic</a ></li>,
-                     room == "tech" ? <li className="active"><a>Tech Help</a></li> :   <li><a onClick={() => this.setState({room : 'tech'})}>Tech Help</a></li>]
+        let links = [room == "general" ? <li className="active"><a >General</a></li> : <li><a onClick={() => this.changeRm('general')} >General</a></li>,
+                     room == "coding" ?  <li className="active"><a>Coding</a ></li> : <li><a onClick={() => this.changeRm('coding')} >Coding</a ></li>,
+                     room == "off" ? <li className="active"><a>Off Topic</a ></li> : <li><a onClick={() => this.changeRm('off')}>Off Topic</a ></li>,
+                     room == "tech" ? <li className="active"><a>Tech Help</a></li> :   <li><a onClick={() => this.changeRm('tech')}>Tech Help</a></li>]
         return (
             <div style = {{height:"100vh"}}>
                 <header>
