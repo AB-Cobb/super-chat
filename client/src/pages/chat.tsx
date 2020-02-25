@@ -46,7 +46,8 @@ class Chatpage extends Component <{}, chatState>{
         socket.emit("switch_room", {room : room})
         socket.on('connection', function(io : any){
             io.join(room);
-          });
+        });
+        this.setState({socket : socket})
     }
  
 
