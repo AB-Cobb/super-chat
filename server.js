@@ -38,6 +38,14 @@ colors = ["#035",
 numuser = 0;
 
 
+getPastMessagees ()
+{}
+
+addMessage(){
+
+}
+
+
 //listen to everything
 chat_io.on('connection', (socket) => {
     console.log('New user connected')
@@ -107,7 +115,8 @@ chat_io.on('connection', (socket) => {
         messages.push(message);
         // */
         //console.log(messages)
-        chat_io.sockets.in(socket.room).emit ("new_message", message);
+        chat_io.sockets.emit ("new_message", message);
+        //chat_io.sockets.in(socket.room).emit ("new_message", message);
     })
 })
 
