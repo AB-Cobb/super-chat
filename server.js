@@ -79,7 +79,7 @@ chat_io.on('connection', (socket) => {
     //listen for room change
     socket.on ("switch_room", (data) => {
         socket.leave(socket.room)
-        socket.room = 'data.room'
+        socket.room = data.room
         socket.join(data.room)
  
         chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
