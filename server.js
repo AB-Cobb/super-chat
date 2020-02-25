@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 //testing
 app.get('/express_backend', (req, res) => {
-    res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+    res.send({ express: 'EXPRESS WORKS!' });
   });
 
 //Routing
@@ -22,7 +22,13 @@ server = app.listen(process.env.PORT || 3000)
 //Socket
 const chat_io = require("socket.io")(server)
 
-messages = [];
+
+pastmessages = {
+    general : [],
+    coding : [],
+    tech : [],
+    off : []
+    };
 colors = ["#035",
           "#050",
           "#500",
@@ -37,8 +43,11 @@ chat_io.on('connection', (socket) => {
     console.log('New user connected')
     //set color
     console.log(numuser)
-    socket.color = colors[numuser%colors.length]
+    socket.color = colors[numuser]
     numuser++;
+    numuser = numuser%colors.length;
+    socket.room = 'general'
+    let messages = pastmessages.general;
     // send new user messages
     for (message in messages){
         socket.emit ("new_message",
@@ -54,13 +63,42 @@ chat_io.on('connection', (socket) => {
         console.log(data.username)
         socket.username = data.username;
     })
+    socket.on ("switch_room", (data) => {
+        console.log(data.room)
+        socket.leave(socket.room)
+        socket.join(data.room);
+        let messages;
+        if (data.room=='general')
+            messages = pastmessages.general;
+        else if (data.room=='coding')
+            messages = pastmessages.coding;
+        else if (data.room=='tech')
+            messages = pastmessages.tech;
+        else if (data.room=='off')
+            messages = pastmessages.off;
+        for (message in messages){
+            socket.emit ("new_message",
+                {message : messages[message].message, username : messages[message].username, color : messages[message].color}
+            )
+        }
+    })
 
     //listen to new message
     socket.on("new_message", (data) => {
         message = {message : data.message, username : socket.username, color : socket.color};
+        let messages;
+        if (socket.room=='general')
+            messages = pastmessages.general;
+        else if (socket.room=='coding')
+            messages = pastmessages.coding;
+        else if (socket.room=='tech')
+            messages = pastmessages.tech;
+        else if (socket.room=='off')
+            messages = pastmessages.off;
         messages.push(message);
+        
         //console.log(messages)
-        chat_io.sockets.emit ("new_message", message);
+        chat_io.sockets.in(socket.room).emit ("new_message", message);
     })
 })
 
