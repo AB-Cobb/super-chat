@@ -43,13 +43,15 @@ class Chatpage extends Component <{}, chatState>{
         this.setState({name: e.currentTarget.value});
     }
     sendMessage(){
-        const socket = this.state.socket;
-        let msg : string = this.state.msg;
-        if (this.state.name == ""){
-            this.setState({name : "Anonymouse"})
+        if (this.state.msg !== ""){
+            const socket = this.state.socket;
+            let msg : string = this.state.msg;
+            if (this.state.name == ""){
+                this.setState({name : "Anonymouse"})
+            }
+            socket.emit('new_message', {message : this.state.msg, username : "Test Name"/*this.state.name*/})
+            this.setState({msg : ""})
         }
-        socket.emit('new_message', {message : this.state.msg, username : this.state.name})
-        this.setState({msg : ""})
     }
     render () {
         
