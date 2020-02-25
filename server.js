@@ -75,7 +75,7 @@ chat_io.on('connection', (socket) => {
     let pastmsg = getPastMessages('general');
     for (message in pastmsg){
         socket.emit ("new_message",
-            {message : messages[message].message, username : messages[message].username, color : messages[message].color}
+            {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
         )
     }//*/
 
@@ -94,12 +94,12 @@ chat_io.on('connection', (socket) => {
         socket.room = data.room
         socket.join(data.room)
  
-        chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
+        //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
 
         let pastmsg = getPastMessages('general');
         for (message in pastmsg){
             socket.emit ("new_message",
-                {message : messages[message].message, username : messages[message].username, color : messages[message].color}
+            {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
             )
         }
     })
