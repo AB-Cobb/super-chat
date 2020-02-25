@@ -15,12 +15,13 @@ app.get ('/', (req, res) => {
     //res.send('Hello Internet!')
     res.render('index')
 })
+/*
 app.get('/general', (req,res) => {
     res.render('chatrm', { room : "general"})
 })
 app.get('/tech', (req,res) => {
     res.render('chatrm', { room : "tech"})
-})
+})// */
 
 //PORTS
 server = app.listen(3000)
