@@ -116,7 +116,7 @@ chat_io.on('connection', (socket) => {
         // */
         //console.log(messages)
         //chat_io.sockets.emit ("new_message", message);
-        chat_io.sockets.to('general').emit ("new_message", message);
+        chat_io.sockets.to('coding').emit ("new_message", message);
     })
 })
 
