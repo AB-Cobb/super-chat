@@ -83,7 +83,7 @@ chat_io.on('connection', (socket) => {
         socket.leave(socket.room);
         socket.join(data.room);
         */
-        sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
+        chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
         /*
         let messages;
         if (data.room=='general')
