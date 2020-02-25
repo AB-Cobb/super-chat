@@ -49,6 +49,7 @@
    }
  aside {
      float: left;
+     width: 17%;
  }
  footer {
      clear: both;
