@@ -42,7 +42,7 @@ class Chatpage extends Component <{}, chatState>{
     changeRm (room : string){
         this.setState({room : room})
         this.setState(({msglist : []}))
-        const socket = this.state.socket;
+        let socket = this.state.socket;
         socket.emit("switch_room", {room : room})
         socket.on('connection', function(io : any){
             io.join(room);
