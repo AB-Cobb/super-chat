@@ -90,7 +90,7 @@ chat_io.on('connection', (socket) => {
 
     //listen to new message
     socket.on("new_message", (data) => {
-        message = {message : data.message, username : socket.username, color : socket.color};
+        message = {message : data.message + " in room " + socket.room, username : socket.username, color : socket.color};
         /*
         let messages;
         if (socket.room=='general')
@@ -104,7 +104,7 @@ chat_io.on('connection', (socket) => {
         messages.push(message);
         // */
         //console.log(messages)
-        chat_io.sockets.in(socket.room).emit ("new_message", message + socket.room);
+        chat_io.sockets.in(socket.room).emit ("new_message", message);
     })
 })
 
