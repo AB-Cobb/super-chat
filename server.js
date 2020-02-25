@@ -79,10 +79,7 @@ chat_io.on('connection', (socket) => {
     socket.on ("switch_room", (data) => {
         console.log(data.room);
         socket.room = data.room;
-        /*
-        socket.leave(socket.room);
-        socket.join(data.room);
-        */
+ 
         chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
         /*
         let messages;
@@ -118,7 +115,7 @@ chat_io.on('connection', (socket) => {
         // */
         //console.log(messages)
         //chat_io.sockets.emit ("new_message", message);
-        chat_io.sockets.in(socket.room).emit ("new_message", message);
+        chat_io.sockets.emit ("new_message", message);
     })
 })
 
