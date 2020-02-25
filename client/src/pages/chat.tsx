@@ -26,11 +26,17 @@ class Chatpage extends Component <{}, chatState>{
         this.updateMsg = this.updateMsg.bind(this);
         this.updateName = this.updateName.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+        
+    }
+    componentDidMount() {
         const socket = this.state.socket;
         const room = this.state.room
+        /*
         socket.on('connection', function(io : any){
+            console.log ("Joining general")
             io.join(room);
           });
+          */
         socket.on("new_message", (data : { username: string; message: string; color : string}) => {
             console.log(data)
             let msglist : [{ username: string; message: string; color : string}]= this.state.msglist 
@@ -44,9 +50,10 @@ class Chatpage extends Component <{}, chatState>{
         this.setState(({msglist : []}))
         let socket = this.state.socket;
         socket.emit("switch_room", {room : room})
+        /*
         socket.on('connection', function(io : any){
             io.join(room);
-        });
+        });*/
         this.setState({socket : socket})
     }
  
