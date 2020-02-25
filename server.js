@@ -38,13 +38,27 @@ colors = ["#035",
 numuser = 0;
 
 
-function getPastMessagees (room)
+function getPastMessages (room)
 {
-
+    if (room == 'general')
+        return pastmessages.general
+    else if (room == 'coding')
+        return pastmessages.coding
+    else if (room == 'tech')
+        return pastmessages.tech
+    else if (room == 'off')
+        return pastmessages.off
 }
 
-function addMessage(room){
-
+function addMessage(room, msg){
+    if (room == 'general')
+        pastmessages.general.push(msg)
+    else if (room == 'coding')
+        pastmessages.coding.push(msg)
+    else if (room == 'tech')
+        pastmessages.tech.push(msg)
+    else if (room == 'off')
+        pastmessages.off.push(msg)
 }
 
 
@@ -58,9 +72,7 @@ chat_io.on('connection', (socket) => {
     numuser = numuser%colors.length;
     socket.room = 'general'
     socket.join('general')
-    let pastmsg = pastmessages.general;
-    // send new user messages
-    /*
+    let pastmsg = getPastMessages('general');
     for (message in pastmsg){
         socket.emit ("new_message",
             {message : messages[message].message, username : messages[message].username, color : messages[message].color}
@@ -83,41 +95,19 @@ chat_io.on('connection', (socket) => {
         socket.join(data.room)
  
         chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
-        /*
-        let messages;
-        if (data.room=='general')
-            messages = pastmessages.general;
-        else if (data.room=='coding')
-            messages = pastmessages.coding;
-        else if (data.room=='tech')
-            messages = pastmessages.tech;
-        else if (data.room=='off')
-            messages = pastmessages.off;
-        for (message in messages){
+
+        let pastmsg = getPastMessages('general');
+        for (message in pastmsg){
             socket.emit ("new_message",
                 {message : messages[message].message, username : messages[message].username, color : messages[message].color}
             )
-        }//*/
+        }
     })
 
     //listen to new message
     socket.on("new_message", (data) => {
-        message = {message : data.message + " in room " + socket.room, username : socket.username, color : socket.color};
-        /*
-        let messages;
-        if (socket.room=='general')
-            messages = pastmessages.general;
-        else if (socket.room=='coding')
-            messages = pastmessages.coding;
-        else if (socket.room=='tech')
-            messages = pastmessages.tech;
-        else if (socket.room=='off')
-            messages = pastmessages.off;
-        messages.push(message);
-        // */
-        //console.log(messages)
-        //chat_io.sockets.emit ("new_message", message);
-        socket.emit("new_message", message)
+        message = {message : data.message, username : socket.username, color : socket.color};
+        addMessage(socket.room, message)
         chat_io.sockets.to(socket.room).emit ("new_message", message);
     })
 })
