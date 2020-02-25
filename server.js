@@ -38,10 +38,12 @@ colors = ["#035",
 numuser = 0;
 
 
-getPastMessagees ()
-{}
+function getPastMessagees (room)
+{
 
-addMessage(){
+}
+
+function addMessage(room){
 
 }
 
