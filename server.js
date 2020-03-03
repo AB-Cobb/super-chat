@@ -88,6 +88,7 @@ chat_io.on('connection', (socket) => {
     numuser = numuser%colors.length;
     socket.room = 'general'
     socket.join('general')
+    /*
     let pastmsg = getPastMessages('general');
     for (message in pastmsg){
         socket.emit ("new_message",
