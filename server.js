@@ -75,14 +75,15 @@ var numuser = 0;
 
 function getPastMessages (room)
 {  
-    return Pastmessages.find({room : room}).exec((error, data) => {
+    return new Promise (Pastmessages.find({room : room}).exec((error, data) => {
         if (error) {
             console.log(error);
             return null
         }
         console.log("past msg Data = " ,data )
         return data
-    });
+        })
+    )
 }
 
 function addMessage(room, msg){
@@ -106,7 +107,7 @@ chat_io.on('connection', (socket) => {
     numuser = numuser%colors.length;
     socket.room = 'general'
     socket.join('general')
-    /*
+    
     getPastMessages('general').then((pastmsg) => {
         console.log("emit past messages: ", pastmsg)
         for (message in pastmsg){
@@ -116,23 +117,7 @@ chat_io.on('connection', (socket) => {
             )
         }
     });
-    // */
-    Pastmessages.find({room : 'general'}).exec((error, data) => {
-        if (error) {
-            console.log(error);
-            return null
-        }
-        console.log("past msg Data = " ,data )
-        return data
-    }).then((pastmsg) => {
-        console.log("emit past messages: ", pastmsg)
-        for (message in pastmsg){
-            console.log("emit past msg : ", message)
-            socket.emit ("new_message",
-                {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
-            )
-        }
-    });
+
 
     //defalt name
     socket.username = "Anonymouse"
