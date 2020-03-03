@@ -3,9 +3,21 @@ const app = express();
 const router = express.Router();
 const path = require('path');
 const mongoose = require('mongoose');
+
+const dbconf = require('./db/db')
 //import models
 const Log = require('./models/log');
 const Pastmessages = require('./models/messages')
+
+mongoose.connect(process.env.MONGODB_URI || DataBaseConfig.db, {
+    useNewUrlParser: true
+  }).then(() => {
+      console.log('Database connected')
+    },
+    error => {
+      console.log('Could not connect to DB: ' + error)
+    }
+  )
 
 //app.set ('view engine', 'ejs')
 
@@ -20,7 +32,6 @@ app.get('/express_backend', (req, res) => {
     //Messages
 app.route('/api/msg').get((req, res) => {
     res.send({ api: 'Here be API' });
-    /*
     Pastmessages.find().exec((error, data) => {
         if (error) {
             console.log(error);
