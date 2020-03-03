@@ -19,7 +19,9 @@ app.get('/express_backend', (req, res) => {
 //Routing
     //Messages
 app.route('/api/msg').get((req, res) => {
-    Pastmessages.find({}, (error, data) => {
+    res.send({ api: 'Here be API' });
+    /*
+    Pastmessages.find().exec((error, data) => {
         if (error) {
             console.log(error);
             return next(error);
@@ -28,9 +30,19 @@ app.route('/api/msg').get((req, res) => {
             res.json(data);
         }
     })
+    /*
+    Pastmessages.find({}, (error, data) => {
+        if (error) {
+            console.log(error);
+            return next(error);
+        } else {
+            console.log("message API ", data)
+            res.json(data);
+        }
+    })// */
 });
     //Logs 
-app.route('/api/msg').get((req, res) => {
+app.route('/api/log').get((req, res) => {
     Logs.find((error, data) => {
         if (error) {
             console.log(error);
@@ -73,7 +85,7 @@ function getPastMessages (room)
 
 function addMessage(room, msg){
     msg.room = room;
-    Pastmessages.create(msg, (error, data) => {
+    Pastmessages.create(msg).exec((error, data) => {
         console.log("Hello from addMessage DATA = ", data)
         if (error) {
             console.log(error);
