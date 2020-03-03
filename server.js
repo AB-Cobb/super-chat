@@ -85,7 +85,7 @@ function getPastMessages (room)
 
 function addMessage(room, msg){
     msg.room = room;
-    Pastmessages.create(msg).exec((error, data) => {
+    Pastmessages.create(msg, (error, data) => {
         console.log("Hello from addMessage DATA = ", data)
         if (error) {
             console.log(error);
