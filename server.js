@@ -1,6 +1,11 @@
-const express = require ('express')
-const app = express()
+const express = require ('express');
+const app = express();
+const router = express.Router();
 const path = require('path');
+const mongoose = require('mongoose');
+//import models
+const Log = require('./models/log');
+const pastmessages = require('./models/messages')
 
 //app.set ('view engine', 'ejs')
 
@@ -22,12 +27,12 @@ server = app.listen(process.env.PORT || 3000)
 //Socket
 const chat_io = require("socket.io")(server)
 
-
+/*
 pastmessages = {
     general : [],
     coding : [],
     tech : [],
-    off : []};
+    off : []};// */
 colors = ["#035",
           "#050",
           "#500",
@@ -38,7 +43,19 @@ numuser = 0;
 
 
 function getPastMessages (room)
-{
+{ 
+    return pastmessages.find({room : room}, (error, data) => {
+        if (error) {
+            console.log(error);
+            return null
+        }
+        return data
+    });
+}
+
+
+
+    /*
     if (room == 'general')
         return pastmessages.general
     else if (room == 'coding')
@@ -47,6 +64,7 @@ function getPastMessages (room)
         return pastmessages.tech
     else if (room == 'off')
         return pastmessages.off
+    // */
 }
 
 function addMessage(room, msg){
@@ -95,12 +113,13 @@ chat_io.on('connection', (socket) => {
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
 
-        let pastmsg = getPastMessages(data.room);
-        for (message in pastmsg){
-            socket.emit ("new_message",
-            {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
-            )
-        }
+        getPastMessages(data.room).then((pastmsg) =>{
+            for (message in pastmsg){
+                socket.emit ("new_message",
+                {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
+                )
+            }
+        });
     })
 
     //listen to new message
