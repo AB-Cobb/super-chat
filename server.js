@@ -92,15 +92,15 @@ chat_io.on('connection', (socket) => {
     socket.room = 'general'
     socket.join('general')
     
-    getPastMessages('general').then((pastmsg) =>{
-        console.log("emit past messages: ", pastmsg)
-        for (message in pastmsg){
-            console.log("emit past msg : ", message)
-            socket.emit ("new_message",
-                {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
-            )
-        }
-        })
+    let pastmsg = getPastMessages('general')
+    console.log("emit past messages: ", pastmsg)
+    for (message in pastmsg){
+        console.log("emit past msg : ", message)
+        socket.emit ("new_message",
+            {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
+        )
+    }
+
 
     //defalt name
     socket.username = "Anonymouse"
@@ -119,13 +119,12 @@ chat_io.on('connection', (socket) => {
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
 
-        getPastMessages(data.room).then((pastmsg) =>{
-            for (message in pastmsg){
-                socket.emit ("new_message",
-                {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
-                )
-            }
-        });// */
+        let pastmsg = getPastMessages(data.room)
+        for (message in pastmsg){
+            socket.emit ("new_message",
+            {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
+            )
+        }
     })
 
     //listen to new message
