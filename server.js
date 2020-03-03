@@ -9,7 +9,7 @@ const dbconf = require('./db/db')
 const Log = require('./models/log');
 const Pastmessages = require('./models/messages')
 
-mongoose.connect(process.env.MONGODB_URI || DataBaseConfig.db, {
+mongoose.connect(process.env.MONGODB_URI || dbconf.db, {
     useNewUrlParser: true
   }).then(() => {
       console.log('Database connected')
