@@ -90,12 +90,13 @@ chat_io.on('connection', (socket) => {
     socket.join('general')
     
     getPastMessages('general').then((pastmsg) =>{
-            for (message in pastmsg){
-                console.log("emit past msg : ", message)
-                socket.emit ("new_message",
-                    {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
-                )
-            }
+        console.log("emit past messages: ", pastmsg)
+        for (message in pastmsg){
+            console.log("emit past msg : ", message)
+            socket.emit ("new_message",
+                {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
+            )
+        }
         })
 
     //defalt name
