@@ -44,6 +44,7 @@ numuser = 0;
 
 function getPastMessages (room)
 { 
+    console.log("hello from get past messages")
     return Pastmessages.find({room : room}, (error, data) => {
         if (error) {
             console.log(error);
