@@ -5,7 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 //import models
 const Log = require('./models/log');
-const pastmessages = require('./models/messages')
+const Pastmessages = require('./models/messages')
 
 //app.set ('view engine', 'ejs')
 
@@ -44,7 +44,7 @@ numuser = 0;
 
 function getPastMessages (room)
 { 
-    return pastmessages.find({room : room}, (error, data) => {
+    return Pastmessages.find({room : room}, (error, data) => {
         if (error) {
             console.log(error);
             return null
@@ -67,6 +67,13 @@ function getPastMessages (room)
     // */
 
 function addMessage(room, msg){
+    Pastmessages.create(msg, (error, data) => {
+        if (error) {
+            console.log(error);
+            return
+            res.json(data)
+    })
+    /*
     if (room == 'general')
         pastmessages.general.push(msg)
     else if (room == 'coding')
@@ -75,6 +82,7 @@ function addMessage(room, msg){
         pastmessages.tech.push(msg)
     else if (room == 'off')
         pastmessages.off.push(msg)
+        // */
 }
 
 
