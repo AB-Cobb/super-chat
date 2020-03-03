@@ -89,12 +89,13 @@ chat_io.on('connection', (socket) => {
     socket.room = 'general'
     socket.join('general')
     
-    let pastmsg = getPastMessages('general');
-    for (message in pastmsg){
-        socket.emit ("new_message",
-            {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
-        )
-    }//*/
+    getPastMessages('general').then((pastmsg) =>{
+            for (message in pastmsg){
+                socket.emit ("new_message",
+                {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
+                )
+            }
+        })
 
     //defalt name
     socket.username = "Anonymouse"
@@ -119,7 +120,7 @@ chat_io.on('connection', (socket) => {
                 {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
                 )
             }
-        });
+        });// */
     })
 
     //listen to new message
