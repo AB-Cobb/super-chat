@@ -75,7 +75,7 @@ var numuser = 0;
 
 function getPastMessages (room)
 {  
-    Pastmessages.find({room : room}, (error, data) => {
+    let msgs = Pastmessages.find({room : room}, (error, data) => {
         if (error) {
             console.log(error);
             return null
@@ -83,11 +83,11 @@ function getPastMessages (room)
         console.log("past msg Data = " ,data )
         return data
     });
+    return msgs;
 }
 
 function addMessage(room, msg){
     msg.room = room;
-    console.log("Hello from addMessage, msg = " , msg)
     Pastmessages.create(msg, (error, data) => {
         if (error) {
             console.log(error);
