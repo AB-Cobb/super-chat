@@ -65,7 +65,6 @@ function getPastMessages (room)
     else if (room == 'off')
         return pastmessages.off
     // */
-}
 
 function addMessage(room, msg){
     if (room == 'general')
