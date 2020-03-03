@@ -17,6 +17,29 @@ app.get('/express_backend', (req, res) => {
   });
 
 //Routing
+    //Messages
+app.route('/api/msg').get((req, res) => {
+    Pastmessages.find((error, data) => {
+        if (error) {
+            console.log(error);
+            return next(error);
+        } else {
+            res.json(data);
+        }
+    })
+});
+    //Logs 
+app.route('/api/msg').get((req, res) => {
+    Logs.find((error, data) => {
+        if (error) {
+            console.log(error);
+            return next(error);
+        } else {
+            res.json(data);
+        }
+    })
+});
+
 app.get('*', (req, res) => {
     res.sendfile(path.join(__dirname , '/client/build/index.html'))
   });
@@ -27,19 +50,13 @@ server = app.listen(process.env.PORT || 3000)
 //Socket
 const chat_io = require("socket.io")(server)
 
-/*
-pastmessages = {
-    general : [],
-    coding : [],
-    tech : [],
-    off : []};// */
-colors = ["#035",
-          "#050",
-          "#500",
-          "#505",
-          "#550",
-          "#005"]
-numuser = 0;
+var colors = ["#035",
+                "#050",
+                "#500",
+                "#505",
+                "#550",
+                "#005"]
+var numuser = 0;
 
 
 function getPastMessages (room)
@@ -53,9 +70,6 @@ function getPastMessages (room)
     });
 }
 
-
-
-
 function addMessage(room, msg){
     msg.room = room;
     Pastmessages.create(msg, (error, data) => {
@@ -67,18 +81,7 @@ function addMessage(room, msg){
         console.log("adding message ", data)
         res.json(data)
     })
-    /*
-    if (room == 'general')
-        pastmessages.general.push(msg)
-    else if (room == 'coding')
-        pastmessages.coding.push(msg)
-    else if (room == 'tech')
-        pastmessages.tech.push(msg)
-    else if (room == 'off')
-        pastmessages.off.push(msg)
-        // */
 }
-
 
 //listen to everything
 chat_io.on('connection', (socket) => {
