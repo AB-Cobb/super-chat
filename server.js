@@ -31,26 +31,16 @@ app.get('/express_backend', (req, res) => {
 //Routing
     //Messages
 app.route('/api/msg').get((req, res) => {
-    res.send({ api: 'Here be API' });
+    //res.send({ api: 'Here be API' });
     Pastmessages.find().exec((error, data) => {
         if (error) {
             console.log(error);
-            return next(error);
+            res.json({ Error: error });
         } else {
             console.log("message API ", data)
             res.json(data);
         }
     })
-    /*
-    Pastmessages.find({}, (error, data) => {
-        if (error) {
-            console.log(error);
-            return next(error);
-        } else {
-            console.log("message API ", data)
-            res.json(data);
-        }
-    })// */
 });
     //Logs 
 app.route('/api/log').get((req, res) => {
