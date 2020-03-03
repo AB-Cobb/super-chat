@@ -117,7 +117,7 @@ chat_io.on('connection', (socket) => {
         }
     });
     // */
-    Pastmessages.find({room : room}).exec((error, data) => {
+    Pastmessages.find({room : 'general'}).exec((error, data) => {
         if (error) {
             console.log(error);
             return null
