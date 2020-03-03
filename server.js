@@ -71,7 +71,8 @@ function addMessage(room, msg){
         if (error) {
             console.log(error);
             return
-            res.json(data)
+        }
+        res.json(data)
     })
     /*
     if (room == 'general')
