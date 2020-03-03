@@ -19,11 +19,12 @@ app.get('/express_backend', (req, res) => {
 //Routing
     //Messages
 app.route('/api/msg').get((req, res) => {
-    Pastmessages.find((error, data) => {
+    Pastmessages.find({}, (error, data) => {
         if (error) {
             console.log(error);
             return next(error);
         } else {
+            console.log("message API ", data)
             res.json(data);
         }
     })
