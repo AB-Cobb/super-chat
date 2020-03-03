@@ -103,7 +103,6 @@ function addMessage(room, msg){
             return
         }
         console.log("adding message ", data)
-        res.json(data)
     })
 }
 
