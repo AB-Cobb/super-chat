@@ -51,7 +51,6 @@ function getPastMessages (room)
             console.log(error);
             return null
         }
-        
         return data
     });
 }
