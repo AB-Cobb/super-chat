@@ -55,18 +55,9 @@ function getPastMessages (room)
 
 
 
-    /*
-    if (room == 'general')
-        return pastmessages.general
-    else if (room == 'coding')
-        return pastmessages.coding
-    else if (room == 'tech')
-        return pastmessages.tech
-    else if (room == 'off')
-        return pastmessages.off
-    // */
 
 function addMessage(room, msg){
+    msg.room = room;
     Pastmessages.create(msg, (error, data) => {
         if (error) {
             console.log(error);
@@ -97,7 +88,7 @@ chat_io.on('connection', (socket) => {
     numuser = numuser%colors.length;
     socket.room = 'general'
     socket.join('general')
-    /*
+    
     let pastmsg = getPastMessages('general');
     for (message in pastmsg){
         socket.emit ("new_message",
