@@ -135,7 +135,7 @@ chat_io.on('connection', (socket) => {
         socket.join(data.room)
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
-        Pastmessages.find({room : room}).exec((error, data) => {
+        Pastmessages.find({room : 'general'}).exec((error, data) => {
             if (error) {
                 console.log(error);
                 return null
