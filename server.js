@@ -74,12 +74,7 @@ server = app.listen(process.env.PORT || 3000)
 //Socket
 const chat_io = require("socket.io")(server)
 
-var colors = ["#035",
-                "#050",
-                "#500",
-                "#505",
-                "#550",
-                "#005"]
+const colors = ["#035","#050","#500","#505","#550","#005"]
 var colornum = 0;
 
 function addMessage(room, msg){
@@ -113,7 +108,7 @@ chat_io.on('connection', (socket) => {
     socket.room = 'general'
     socket.join('general')
     
-    Pastmessages.find({room : 'general'}).sort({'createdAt' : -1}).limit(2).exec((error, pastmsg) => {
+    Pastmessages.find({room : 'general'}).sort({'createdAt' : -1}).limit(12).exec((error, pastmsg) => {
         if (error) {
             console.log(error);
         } else {
@@ -133,7 +128,7 @@ chat_io.on('connection', (socket) => {
     //listen to change name
     socket.on ("change_username", (data) => {
         console.log(data.username)
-        addLog("CHANGE NAME", socket.username + " changin name to " + data.username)
+        addLog("CHANGE NAME", socket.username + " change name to " + data.username)
         socket.username = data.username;
     })
 
@@ -145,11 +140,12 @@ chat_io.on('connection', (socket) => {
         socket.join(data.room)
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
-        Pastmessages.find({room : data.room}).sort({'createdAt' : 1}).exec((error, pastmsg) => {
+        Pastmessages.find({room : data.room}).sort({'createdAt' : -1}).limit(12).exec((error, pastmsg).exec((error, pastmsg) => {
             if (error) {
                 console.log(error);
             } else {
                 console.log("past msg Data = " ,pastmsg )
+                pastmsg.reverse();
                 for (message in pastmsg){
                     socket.emit ("new_message",
                     {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
