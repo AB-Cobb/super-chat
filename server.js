@@ -42,7 +42,7 @@ app.route('/api/msg').get((req, res) => {
     })
 });
 app.route('/api/msgbyroom/:rm').get((req, res) => {
-    Pastmessages.find({room : rm}).exec((error, data) => {
+    Pastmessages.find({room : req.params.rm}).exec((error, data) => {
         if (error) {
             console.log(error);
             res.json({ Error: error });
