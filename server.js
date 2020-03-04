@@ -54,7 +54,7 @@ app.route('/api/msgbyroom/:rm').get((req, res) => {
 });
     //Logs 
 app.route('/api/log').get((req, res) => {
-    Logs.find((error, data) => {
+    Log.find((error, data) => {
         if (error) {
             console.log(error);
             return next(error);
