@@ -80,7 +80,7 @@ var colors = ["#035",
                 "#505",
                 "#550",
                 "#005"]
-var numuser = 0;
+var colornum = 0;
 
 function addMessage(room, msg){
     msg.room = room;
@@ -92,15 +92,24 @@ function addMessage(room, msg){
         console.log("adding message ", data)
     })
 }
+function addLog(e, text){
+    Log.create({event : e , data : text}, (error, data) => {
+        if (error) {
+            console.log(error);
+            return
+        }
+        console.log("adding log ", data)
+    })
+}
 
 //listen to everything
 chat_io.on('connection', (socket) => {
     console.log('New user connected')
+    addLog("NEW USER", "Joining General")
     //set color
-    console.log(numuser)
-    socket.color = colors[numuser]
-    numuser++;
-    numuser = numuser%colors.length;
+    socket.color = colors[colornum]
+    colornum++;
+    colornum = colornum%colors.length;
     socket.room = 'general'
     socket.join('general')
     
@@ -124,11 +133,13 @@ chat_io.on('connection', (socket) => {
     //listen to change name
     socket.on ("change_username", (data) => {
         console.log(data.username)
+        addLog("CHANGE NAME", socket.username + " changin name to " + data.username)
         socket.username = data.username;
     })
 
     //listen for room change
     socket.on ("switch_room", (data) => {
+        addLog("ROOM CHANGE", socket.username + " moving from " + socket.room + " to " + data.room)
         socket.leave(socket.room)
         socket.room = data.room
         socket.join(data.room)
@@ -156,6 +167,6 @@ chat_io.on('connection', (socket) => {
 })
 
 chat_io.on('disconnect', function (data){
+    addLog("DISCONTECT", socket.username + " left " + socket.room)
     console.log ("Client disconnected");
-    numuser--;
 });

@@ -56,6 +56,7 @@ class Chatpage extends Component <{}, chatState>{
         if (this.state.msg !== ""){
             const socket = this.state.socket;
             let msg : string = this.state.msg;
+            //check for name change
             if (this.state.name !== this.state.prevname){
                 if (this.state.name == ""){
                     this.setState({name : "Anonymouse"})
