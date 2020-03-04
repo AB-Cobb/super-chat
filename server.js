@@ -72,7 +72,7 @@ var colors = ["#035",
                 "#005"]
 var numuser = 0;
 
-
+/*
 function getPastMessages (room)
 {  
     return new Promise (Pastmessages.find({room : room}).exec((error, data) => {
@@ -84,7 +84,7 @@ function getPastMessages (room)
         return data
         })
     )
-}
+}//*/
 
 function addMessage(room, msg){
     msg.room = room;
@@ -135,13 +135,25 @@ chat_io.on('connection', (socket) => {
         socket.join(data.room)
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
-
+        Pastmessages.find({room : room}).exec((error, data) => {
+            if (error) {
+                console.log(error);
+                return null
+            }
+            console.log("past msg Data = " ,data )
+                for (message in pastmsg){
+                    socket.emit ("new_message",
+                    {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
+                    )
+                }
+            })
+            /*
         let pastmsg = getPastMessages(data.room)
         for (message in pastmsg){
             socket.emit ("new_message",
             {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
             )
-        }
+        }//*/
     })
 
     //listen to new message
