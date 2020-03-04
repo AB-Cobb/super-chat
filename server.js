@@ -109,6 +109,7 @@ chat_io.on('connection', (socket) => {
             console.log(error);
         } else {
             console.log("past msg Data = " ,pastmsg )
+            pastmsg.reverse();
             for (message in pastmsg){
                 socket.emit ("new_message",
                 {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
@@ -133,7 +134,7 @@ chat_io.on('connection', (socket) => {
         socket.join(data.room)
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
-        Pastmessages.find({room : data.room}).exec((error, pastmsg) => {
+        Pastmessages.find({room : data.room}).sort({'createdAt' : 1}).exec((error, pastmsg) => {
             if (error) {
                 console.log(error);
             } else {
