@@ -31,8 +31,18 @@ app.get('/express_backend', (req, res) => {
 //Routing
     //Messages
 app.route('/api/msg').get((req, res) => {
-    //res.send({ api: 'Here be API' });
     Pastmessages.find().exec((error, data) => {
+        if (error) {
+            console.log(error);
+            res.json({ Error: error });
+        } else {
+            console.log("message API ", data)
+            res.json(data);
+        }
+    })
+});
+app.route('/api/msgbyroom/:rm').get((req, res) => {
+    Pastmessages.find({room : rm}).exec((error, data) => {
         if (error) {
             console.log(error);
             res.json({ Error: error });
@@ -71,20 +81,6 @@ var colors = ["#035",
                 "#550",
                 "#005"]
 var numuser = 0;
-
-/*
-function getPastMessages (room)
-{  
-    return new Promise (Pastmessages.find({room : room}).exec((error, data) => {
-        if (error) {
-            console.log(error);
-            return null
-        }
-        console.log("past msg Data = " ,data )
-        return data
-        })
-    )
-}//*/
 
 function addMessage(room, msg){
     msg.room = room;
@@ -148,13 +144,6 @@ chat_io.on('connection', (socket) => {
                     )
                 }
             }})
-            /*
-        let pastmsg = getPastMessages(data.room)
-        for (message in pastmsg){
-            socket.emit ("new_message",
-            {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
-            )
-        }//*/
     })
 
     //listen to new message
