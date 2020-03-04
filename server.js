@@ -28,8 +28,8 @@ app.get('/express_backend', (req, res) => {
     res.send({ express: 'EXPRESS WORKS!' });
   });
 
-//Routing
-    //Messages
+// ****** Routing ******
+//Messages
 app.route('/api/msg').get((req, res) => {
     Pastmessages.find().exec((error, data) => {
         if (error) {
@@ -52,7 +52,7 @@ app.route('/api/msgbyroom/:rm').get((req, res) => {
         }
     })
 });
-    //Logs 
+//Logs 
 app.route('/api/log').get((req, res) => {
     Log.find((error, data) => {
         if (error) {
@@ -68,10 +68,10 @@ app.get('*', (req, res) => {
     res.sendfile(path.join(__dirname , '/client/build/index.html'))
   });
 
-//PORTS
+// ****** PORTS ******
 server = app.listen(process.env.PORT || 3000)
 
-//Socket
+// ******* Socket ******
 const chat_io = require("socket.io")(server)
 
 const colors = ["#035","#050","#500","#505","#550","#005"]
@@ -140,7 +140,7 @@ chat_io.on('connection', (socket) => {
         socket.join(data.room)
  
         //chat_io.sockets.emit("new_message", {message : "switching to room " + data.room,  username : socket.username, color : socket.color})
-        Pastmessages.find({room : data.room}).sort({'createdAt' : -1}).limit(12).exec((error, pastmsg).exec((error, pastmsg) => {
+        Pastmessages.find({room : data.room}).sort({'createdAt' : -1}).limit(12).exec((error, pastmsg) => {
             if (error) {
                 console.log(error);
             } else {
@@ -151,7 +151,8 @@ chat_io.on('connection', (socket) => {
                     {message : pastmsg[message].message, username : pastmsg[message].username, color : pastmsg[message].color}
                     )
                 }
-            }})
+            }
+        });
     })
 
     //listen to new message
