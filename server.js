@@ -104,7 +104,7 @@ chat_io.on('connection', (socket) => {
     socket.room = 'general'
     socket.join('general')
     
-    Pastmessages.find({room : 'general'}).sort('createdAt', -1).limit(2).exec((error, pastmsg) => {
+    Pastmessages.find({room : 'general'}).sort({'createdAt' : -1}).limit(2).exec((error, pastmsg) => {
         if (error) {
             console.log(error);
         } else {
